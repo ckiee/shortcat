@@ -1,21 +1,26 @@
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
+import { serve } from "./serve";
+import { admin } from "./admin";
 
-const args = yargs(hideBin(process.argv))
+const a = await yargs(hideBin(process.argv))
     .alias("h", "help")
     .alias("V", "version")
     .demandCommand()
     .command(
         "serve [port]",
         "start the server",
-        _ => {},
-        // _.positional("port", {
-        //     describe: "port to bind on",
-        //     default: 5000
-        // }),
-        argv => {
-            if (argv.verbose) console.info(`start server on :${argv.port}`);
-        }
+        t =>
+            t
+                .demandOption("db-path")
+                .positional("port", { describe: "port to bind on", default: 1312 }),
+        a => serve({ port: a.port, db: a["db-path"] })
+    )
+    .command(
+        "admin",
+        "manage the server",
+        t => t.demandOption("db-path"),
+        a => admin({ db: a["db-path"] })
     )
     .option("db-path", {
         alias: "d",
@@ -23,5 +28,3 @@ const args = yargs(hideBin(process.argv))
         description: "path to sqlite db file"
     })
     .parse();
-
-console.log(args);
