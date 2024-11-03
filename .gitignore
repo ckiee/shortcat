@@ -2,3 +2,4 @@ result
 .direnv
 meow.db*
 node_modules
+.env
