@@ -1,15 +1,31 @@
 # shortcat
 
-To install dependencies:
+shortcat is a little url shortener with declarative runtime management & rbac. 
 
-```bash
-bun install
+i am also testing [elysia](https://elysiajs.com/) with it
+
+## runbook
+``` bash
+nix develop
+bun i
+# (optional)
+bunx drizzle-kit generate && bun ./src/migrate 
+bun run --watch ./shortcat serve -d meow.db 3000
+# (diff terminal)
+./shortcat admin -d meow.db | xclip -selection clipboard -in
 ```
 
-To run:
+then navigate to [`/swagger`](http://localhost:3000/swagger) to get started.
 
-```bash
-bun run src/index.ts
-```
+## stability guarantees
 
-This project was created using `bun init` in bun v1.1.29. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+none. if you depend on this for some reason then poke me and i'll play nice.
+
+## legal
+
+Copyright © 2024 ckie <git-525ff67@ckie.dev>
+
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2,
+as published by Sam Hocevar. See the `COPYING` file for more details.
+
