@@ -14,13 +14,16 @@ const a = await yargs(hideBin(process.argv))
             t
                 .demandOption("db-path")
                 .positional("port", { describe: "port to bind on", default: 1312 }),
-        a => serve({ port: a.port, db: a["db-path"] })
+        a => serve({
+            port: a.port,
+            db: a["db-path"] as string
+        })
     )
     .command(
         "admin",
         "manage the server",
         t => t.demandOption("db-path"),
-        a => admin({ db: a["db-path"] })
+        a => admin({ db: a["db-path"] as string })
     )
     .option("db-path", {
         alias: "d",
