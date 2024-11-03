@@ -1,3 +1,4 @@
-/result
-/.direnv
-/meow.db*
+result
+.direnv
+meow.db*
+node_modules
