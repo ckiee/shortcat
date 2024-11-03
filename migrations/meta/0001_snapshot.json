@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "547c7168-b80b-4e03-9516-f291e6884733",
-  "prevId": "9e4c8710-90b6-4cc0-82e0-780fa6123d39",
+  "id": "78119e1b-931d-42a7-b3a4-61f029413e1e",
+  "prevId": "acb4268c-c949-4336-bea0-0a151f4cece6",
   "tables": {
     "group": {
       "name": "group",
@@ -21,11 +21,25 @@
           "notNull": true,
           "autoincrement": false
         },
+        "owner": {
+          "name": "owner",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "protected": {
+          "name": "protected",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -38,7 +52,21 @@
           "isUnique": true
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "group_owner_role_id_fk": {
+          "name": "group_owner_role_id_fk",
+          "tableFrom": "group",
+          "tableTo": "role",
+          "columnsFrom": [
+            "owner"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -46,13 +74,6 @@
     "link": {
       "name": "link",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
         "createdAt": {
           "name": "createdAt",
           "type": "integer",
@@ -63,7 +84,7 @@
         "shortcode": {
           "name": "shortcode",
           "type": "text",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
@@ -78,6 +99,13 @@
           "name": "group",
           "type": "text",
           "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creator": {
+          "name": "creator",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         }
@@ -90,6 +118,19 @@
           "tableTo": "group",
           "columnsFrom": [
             "group"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "link_creator_role_id_fk": {
+          "name": "link_creator_role_id_fk",
+          "tableFrom": "link",
+          "tableTo": "role",
+          "columnsFrom": [
+            "creator"
           ],
           "columnsTo": [
             "id"
