@@ -17,6 +17,13 @@ bun run --watch ./shortcat serve -d meow.db 3000
 
 then navigate to [`/swagger`](http://localhost:3000/swagger) to get started.
 
+## todo
+- [X] deploy to `pupc.at`
+- [ ] test integrating with eden on `mei.puppycat.house`
+- [ ] flesh out the group mechanics
+- [ ] ~~listen on unix socket, and~~ autocreate & authenticate roles for system users(!!)
+- [ ] verify ACL makes sense
+
 ## stability guarantees
 
 none. if you depend on this for some reason then poke me and i'll play nice.

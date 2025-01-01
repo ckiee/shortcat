@@ -8,15 +8,20 @@ const a = await yargs(hideBin(process.argv))
     .alias("V", "version")
     .demandCommand()
     .command(
-        "serve [port]",
+        "serve [listen]",
         "start the server",
         t =>
             t
                 .demandOption("db-path")
-                .positional("port", { describe: "port to bind on", default: 1312 }),
+                .positional("listen", {
+                    describe: `what to bind on: a port or a JSON-encoded instance of bun.ServeOptions.
+see https://elysiajs.com/patterns/configuration.html#serve`,
+                    default: "1312",
+                    type: "string"
+                }),
         a => serve({
-            port: a.port,
-            db: a["db-path"] as string
+            listen: a.listen,
+            db: a.dbPath as string
         })
     )
     .command(

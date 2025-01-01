@@ -8,7 +8,7 @@ import bearer from "@elysiajs/bearer";
 
 const tlApp = new Elysia()
 
-export async function serve({ port, db: dbPath }: { port: number; db: string }) {
+export async function serve({ listen, db: dbPath }: { listen: string; db: string }) {
     const db = drizzle(new Database(dbPath), { schema });
 
     const app = tlApp;
@@ -37,6 +37,7 @@ export async function serve({ port, db: dbPath }: { port: number; db: string }) 
                 })
             }
         }))
+        .get("/ip", ({ server, request }) => server?.requestIP(request) ?? "awoo")
 
         .group("/roles", app =>
             app
@@ -149,9 +150,9 @@ export async function serve({ port, db: dbPath }: { port: number; db: string }) 
 
             return redirect(link.destination, 302);
         })
-        .listen(port);
+        .listen(!+listen ? JSON.parse(listen) : parseInt(listen));
 
 
-    console.log(`listening on ${app.server?.hostname}:${app.server?.port}`);
+    console.log(`listening on ${app.server?.hostname}:${app.server?.port} (in ${app.server?.development ? "dev mode" : "production"})`);
 }
 
