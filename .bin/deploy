@@ -5,3 +5,5 @@ sed -i '1s/^/#!\/usr\/bin\/env bun\n/' shortcat
 # subst line:  var __dirname = "/home/ckie/git/shortcat/node_modules/yargs/build";
 sed -ie 's/var __dirname = ".*/var __dirname = "yargs\/build"/g' shortcat
 cp -v shortcat ~/git/nixfiles/secrets/shortcat
+rsync shortcat flowe:shortcat/shortcat
+ssh flowe sudo systemctl restart shortcat

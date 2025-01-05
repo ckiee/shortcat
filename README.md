@@ -10,7 +10,7 @@ nix develop
 bun i
 # (optional)
 bunx drizzle-kit generate && bun ./src/migrate 
-bun run --watch ./shortcat serve -d meow.db 3000
+bun run --watch . serve -d meow.db 3000
 # (diff terminal)
 ./shortcat admin -d meow.db | xclip -selection clipboard -in
 ```
