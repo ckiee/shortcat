@@ -7,7 +7,7 @@ import swagger from "@elysiajs/swagger";
 import bearer from "@elysiajs/bearer";
 
 export async function serve({ listen, db: dbPath }: { listen: string; db: string }) {
-    const db = drizzle(new Database(dbPath), { schema });
+    const db = drizzle(new Database(dbPath), { schema, logger: true });
 
     const api = new Elysia({ prefix: "/_shortcat", name: "api" })
         .use(bearer())
@@ -70,7 +70,11 @@ export async function serve({ listen, db: dbPath }: { listen: string; db: string
                             .values(body.links.map(o => ({ ...o, creator: role!.id })))
                             .onConflictDoUpdate({
                                 target: links.shortcode,
-                                set: { destination: sql.raw(`excluded.${links.destination.name}`) }
+                                set: {
+                                    destination: sql.raw(`excluded.${links.destination.name}`),
+                                    group: sql.raw(`excluded."${links.group.name}"`),
+                                    creator: sql.raw(`excluded.${links.creator.name}`)
+                                }
                             })
                             .returning()
                     }),
