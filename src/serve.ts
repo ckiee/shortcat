@@ -6,12 +6,8 @@ import { createGroup, createLink, groups, links, scopesSufficient, roles, schema
 import swagger from "@elysiajs/swagger";
 import bearer from "@elysiajs/bearer";
 
-const tlApp = new Elysia()
-
 export async function serve({ listen, db: dbPath }: { listen: string; db: string }) {
     const db = drizzle(new Database(dbPath), { schema });
-
-    const app = tlApp;
 
     const api = new Elysia({ prefix: "/_shortcat", name: "api" })
         .use(bearer())
@@ -125,7 +121,7 @@ export async function serve({ listen, db: dbPath }: { listen: string; db: string
                     }));
 
 
-    app
+    const app = new Elysia()
         .use(swagger({
             documentation: {
                 components: {
@@ -139,7 +135,6 @@ export async function serve({ listen, db: dbPath }: { listen: string; db: string
             }
         }))
         .use(api)
-        .get("/", () => "shortcat")
         .get("/*", async ({ params, redirect, error }) => {
             const short = params["*"];
             const link = await db.query.links.findFirst({
@@ -150,9 +145,21 @@ export async function serve({ listen, db: dbPath }: { listen: string; db: string
 
             return redirect(link.destination, 302);
         })
+        .get("/", async ({ params, redirect, error }) => {
+            const link = await db.query.links.findFirst({
+                where: eq(links.shortcode, "")
+            });
+
+            if (!link) return error(404, "shortcat! (no toplevel link)");
+
+            return redirect(link.destination, 302);
+        })
         .listen(!+listen ? JSON.parse(listen) : parseInt(listen));
 
 
     console.log(`listening on ${app.server?.hostname}:${app.server?.port} (in ${app.server?.development ? "dev mode" : "production"})`);
+
+    return app;
 }
 
+export type App = Awaited<ReturnType<typeof serve>>;

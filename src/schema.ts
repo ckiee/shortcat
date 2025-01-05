@@ -67,8 +67,8 @@ export const links = sqliteTable("link", {
     creator: text().notNull().references(() => roles.id)
 });
 
-const _createLink = createInsertSchema(links ,{
-    shortcode: t.String({ minLength: 1 })
+const _createLink = createInsertSchema(links, {
+    shortcode: t.String()
 });
 export const createLink = t.Omit(_createLink, ["id", "createdAt", "creator"]);
 
