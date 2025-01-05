@@ -7,7 +7,7 @@ import swagger from "@elysiajs/swagger";
 import bearer from "@elysiajs/bearer";
 
 export async function serve({ listen, db: dbPath }: { listen: string; db: string }) {
-    const db = drizzle(new Database(dbPath), { schema, logger: true });
+    const db = drizzle(new Database(dbPath), { schema, logger: false/*true for debug*/ });
 
     const api = new Elysia({ prefix: "/_shortcat", name: "api" })
         .use(bearer())
